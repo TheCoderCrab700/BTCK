@@ -1,41 +1,46 @@
- #include <iostream>
+#include <iostream>
 using namespace std;
+
 template<typename T>
 class LinkList {
 private:
     struct Node {
-        T data;
+        T* data;
         Node* next;
-        Node(int value){
-            data=value;
-            next=nullptr; 
+        Node(T* value) {
+            data = value;
+            next = nullptr;
         }
     };
     Node* head;
     Node* tail;
+
 public:
     LinkList() {
-        head=nullptr;
-        tail=nullptr;
-    }    
-    LinkList(const LinkList& other){
-        head=nullptr;
-        tail=nullptr;
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    LinkList(const LinkList& other) {
+        head = nullptr;
+        tail = nullptr;
         Node* travel = other.head;
         while (travel != nullptr) {
             addLast(travel->data);
             travel = travel->next;
         }
     }
+
     ~LinkList() {
         while (head != nullptr) {
             Node* temp = head;
             head = head->next;
+            delete temp->data; // Delete the data pointer
             delete temp;
         }
     }
 
-    void addFirst(T value) {
+    void addFirst(T* value) {
         try {
             Node* newNode = new Node(value);
             if (head == nullptr) {
@@ -48,7 +53,8 @@ public:
             cerr << "Memory allocation failed: " << e.what() << endl;
         }
     }
-    void addLast(T value) {
+
+    void addLast(T* value) {
         try {
             Node* newNode = new Node(value);
             if (head == nullptr) {
@@ -61,7 +67,8 @@ public:
             cerr << "Memory allocation failed: " << e.what() << endl;
         }
     }
-    void addAfter(T target, T value) {
+
+    void addAfter(T* target, T* value) {
         try {
             Node* travel = head;
             while (travel != nullptr && travel->data != target) {
@@ -84,29 +91,33 @@ public:
         if (head != nullptr) {
             Node* temp = head;
             head = head->next;
+            delete temp->data; // Delete the data pointer
             delete temp;
             if (head == nullptr) {
                 tail = nullptr;
             }
         }
     }
+
     void deleteLast() {
         if (head == nullptr) return;
         if (head == tail) {
+            delete head->data; // Delete the data pointer
             delete head;
             head = tail = nullptr;
-        } 
-        else {
+        } else {
             Node* travel = head;
             while (travel->next != tail) {
                 travel = travel->next;
             }
+            delete tail->data; // Delete the data pointer
             delete tail;
             tail = travel;
             tail->next = nullptr;
         }
     }
-    void deleteAfter(T target) {
+
+    void deleteAfter(T* target) {
         Node* travel = head;
         while (travel != nullptr && travel->data != target) {
             travel = travel->next;
@@ -117,15 +128,18 @@ public:
             if (temp == tail) {
                 tail = travel;
             }
+            delete temp->data; // Delete the data pointer
             delete temp;
         }
     }
-    void addValue(T value) {
+
+    void addValue(T* value) {
         if (!exists(value)) {
             addLast(value);
         }
     }
-    void deleteValue(T value) {
+
+    void deleteValue(T* value) {
         if (head == nullptr) return;
         if (head->data == value) {
             deleteFirst();
@@ -141,10 +155,12 @@ public:
             if (temp == tail) {
                 tail = travel;
             }
+            delete temp->data; // Delete the data pointer
             delete temp;
         }
     }
-    bool exists(T value) const {
+
+    bool exists(T* value) const {
         Node* travel = head;
         while (travel != nullptr) {
             if (travel->data == value) {
@@ -154,31 +170,34 @@ public:
         }
         return false;
     }
+
     void sortAscending() {
         if (head == nullptr || head->next == nullptr) return;
         for (Node* i = head; i->next != nullptr; i = i->next) {
             for (Node* j = i->next; j != nullptr; j = j->next) {
-                if (i->data > j->data) {
+                if (*(i->data) > *(j->data)) {
                     swap(i->data, j->data);
                 }
             }
         }
     }
+
     void sortDescending() {
         if (head == nullptr || head->next == nullptr) return;
         for (Node* i = head; i->next != nullptr; i = i->next) {
             for (Node* j = i->next; j != nullptr; j = j->next) {
-                if (i->data < j->data) {
+                if (*(i->data) < *(j->data)) {
                     swap(i->data, j->data);
                 }
             }
         }
     }
+
     friend ostream& operator<<(ostream& out, const LinkList& list) {
         Node* travel = list.head;
         out << "[";
         while (travel != nullptr) {
-            out << travel->data;
+            out << *(travel->data);
             if (travel->next != nullptr) {
                 out << " -> ";
             }
