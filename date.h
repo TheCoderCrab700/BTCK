@@ -17,6 +17,7 @@ public:
 
     // Member functions
     void set_to(int d = 0, int m = 0, int y = 0);
+    bool isvalid() const;
     bool isleap() const;
     int lastday() const;
 

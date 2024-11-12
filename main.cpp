@@ -1,32 +1,50 @@
 #include <iostream>
-#include "LinkList.h"
+#include "CongTrinhKhoaHoc.h"
 #include "date.h"
-using namespace std;
 
 int main() {
-    LinkList<int> list;
-    list.addFirst(10);
-    list.addLast(20);
-    list.addAfter(10, 19);
-    
-    cout << "List after additions: " << list << endl;
+    try {
+        // Test default constructor
+        std::cout << "Testing default constructor:" << std::endl;
+        CongTrinhKhoaHoc defaultCTKH;
+        defaultCTKH.displayInfo();
+        
+        // Test parameterized constructor with valid data
+        std::cout << "\nTesting parameterized constructor with valid data:" << std::endl;
+        Date validDate(15, 10, 2020); // Valid date
+        CongTrinhKhoaHoc validCTKH("CTKH001", validDate, true);
+        validCTKH.displayInfo();
 
-    list.deleteFirst();
-    cout << "List after deleting first: " << list << endl;
+        // Test parameterized constructor with invalid date
+        std::cout << "\nTesting parameterized constructor with invalid date:" << std::endl;
+        Date invalidDate(31, 2, 2021); // Invalid date (Feb 31 doesn't exist)
+        CongTrinhKhoaHoc invalidCTKH("CTKH002", invalidDate, false); // Should throw an exception
+        invalidCTKH.displayInfo();
+    } 
+    catch (const std::exception& e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
+    }
 
-    list.deleteLast();
-    cout << "List after deleting last: " << list << endl;
+    try {
+        // Test setMa() with invalid data
+        std::cout << "\nTesting setMa with empty identifier:" << std::endl;
+        CongTrinhKhoaHoc testCTKH;
+        testCTKH.setMa(""); // Should throw an exception
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
+    }
 
-    list.addLast(30);
-    list.addValue(25);
-    list.addValue(30); // Will not be added since it exists
-    cout << "List after adding values: " << list << endl;
-
-    list.sortAscending();
-    cout << "List after sorting ascending: " << list << endl;
-
-    list.sortDescending();
-    cout << "List after sorting descending: " << list << endl;
+    try {
+        // Test setNsb() with invalid date
+        std::cout << "\nTesting setNsb with invalid date:" << std::endl;
+        CongTrinhKhoaHoc testCTKH;
+        Date invalidDate(30, 2, 2020); // Invalid date
+        testCTKH.setNsb(invalidDate); // Should throw an exception
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Caught exception: " << e.what() << std::endl;
+    }
 
     return 0;
 }

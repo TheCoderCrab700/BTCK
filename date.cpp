@@ -23,6 +23,17 @@ void Date::set_to(int d, int m, int y) {
     day = d;
 }
 
+// Set the date with validation
+bool Date::isvalid() const {
+    if (month < 1 || month > 12) {
+        return false;
+    }
+    if (day < 1 || day > lastday()) {
+        return false;
+    }
+    return true;
+}
+
 // Check if the year is a leap year
 bool Date::isleap() const {
     if (year % 400 == 0) return true;
