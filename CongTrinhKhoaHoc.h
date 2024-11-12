@@ -27,7 +27,7 @@ public:
     void setKhuVuc(bool isInternational);
 
     // Display function
-    void displayInfo() const;
+    virtual void displayInfo() const = 0;
 
 private:
     // Add any other private helper functions if necessary

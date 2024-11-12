@@ -10,7 +10,7 @@ Baibao::Baibao(const std::string& ma, const Date& publicationDate, bool isIntern
         throw std::invalid_argument("Error: Tên CTKH không thể trống");
     }
     if (num <= 0) {
-        throw std::invalid_argument("Error:  Số tác giả phải lớn hơn không");
+        throw std::invalid_argument("Error:  Số tác giả phải lớn hơn 0");
     }
 }
 
